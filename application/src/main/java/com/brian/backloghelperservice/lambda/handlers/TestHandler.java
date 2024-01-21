@@ -8,8 +8,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 public class TestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     @Override
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent apiGatewayProxyRequestEvent, final Context context) {
-        context.getLogger().log("BRIANBRIANBRIAN");
-        System.out.println("BRIANBRIANBRIANBRIAN");
+        context.getLogger().log(apiGatewayProxyRequestEvent.getBody());
         return new APIGatewayProxyResponseEvent().withBody("BRIAN").withStatusCode(200);
     }
 }

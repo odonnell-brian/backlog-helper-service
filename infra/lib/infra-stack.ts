@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { HttpLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
+import { LambdaRestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
 
@@ -13,8 +13,14 @@ export class InfraStack extends cdk.Stack {
       handler: 'com.brian.backloghelperservice.lambda.handlers.TestHandler',
     });
 
-    const lambdaIntegration = new HttpLambdaIntegration('LambdaIntegration', testLambdaFunction, {
-
+    const api = new LambdaRestApi(this, 'TestApi', {
+      restApiName: 'TestApi',
+      handler: testLambdaFunction,
+      proxy: false,
     });
+
+    const test = api.root.addResource('test');
+    test.addMethod('POST');
+    test.addMethod('GET');
   }
 }
