@@ -1,11 +1,9 @@
 package com.brian.backloghelperservice.model;
 
-/**
- * Enum representing the current status of a backlog item.
- */
+/** Enum representing the current status of a backlog item. */
 public enum BacklogItemStatus {
-    UNPLAYED,
-    PLAYING,
-    COMPLETED,
-    ABANDONED;
+  UNPLAYED,
+  PLAYING,
+  COMPLETED,
+  ABANDONED;
 }
