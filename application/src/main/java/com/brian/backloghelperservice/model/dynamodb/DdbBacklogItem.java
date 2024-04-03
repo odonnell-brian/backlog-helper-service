@@ -4,20 +4,19 @@ import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.brian.backloghelperservice.model.BacklogItem;
 import com.brian.backloghelperservice.model.BacklogItemSource;
 import com.brian.backloghelperservice.model.BacklogItemStatus;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.UUID;
 
 /** POJO to represent a backlog item in DynamoDB. */
 @Getter
 @Setter
 @NoArgsConstructor
-@DynamoDBTable(tableName = "BacklogItems")
+@DynamoDBTable(tableName = "backlog-items")
 public class DdbBacklogItem {
 
-  public static final String BACKLOG_TABLE_NAME = "BacklogItems";
+  public static final String BACKLOG_TABLE_NAME = "backlog-items";
   public static final String USER_INDEX = "userItems";
 
   @DynamoDBHashKey private String id;

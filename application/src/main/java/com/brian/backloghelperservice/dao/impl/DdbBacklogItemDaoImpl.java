@@ -12,13 +12,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import javax.inject.Inject;
 
 /** DAO for saving/reading backlog items from DynamoDb. */
-@AllArgsConstructor
 public class DdbBacklogItemDaoImpl implements BacklogItemDao {
 
   private final DynamoDBMapper dynamoMapper;
+
+  /**
+   * Constructor
+   * @param dynamoMapper DDB mapper used to interact with DDB tables.
+   */
+  @Inject
+  public DdbBacklogItemDaoImpl(final DynamoDBMapper dynamoMapper) {
+    this.dynamoMapper = dynamoMapper;
+  }
 
   @Override
   public void saveItem(final BacklogItem item) {
@@ -28,7 +36,7 @@ public class DdbBacklogItemDaoImpl implements BacklogItemDao {
 
   @Override
   public BacklogItem getItem(final String id) {
-    final DdbBacklogItem ddbRecord = dynamoMapper.load(DdbBacklogItem.class, id);
+    final DdbBacklogItem ddbRecord = dynamoMapper.load(DdbBacklogItem.class, id, "TODO");
     return ddbRecord.toBacklogItem();
   }
 

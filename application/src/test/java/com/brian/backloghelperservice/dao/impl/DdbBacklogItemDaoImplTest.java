@@ -1,5 +1,10 @@
 package com.brian.backloghelperservice.dao.impl;
 
+import static com.brian.backloghelperservice.model.dynamodb.DdbBacklogItem.USER_INDEX;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
@@ -7,6 +12,11 @@ import com.brian.backloghelperservice.model.BacklogItem;
 import com.brian.backloghelperservice.model.BacklogItemSource;
 import com.brian.backloghelperservice.model.BacklogItemStatus;
 import com.brian.backloghelperservice.model.dynamodb.DdbBacklogItem;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -14,17 +24,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import static com.brian.backloghelperservice.model.dynamodb.DdbBacklogItem.USER_INDEX;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class DdbBacklogItemDaoImplTest {
@@ -67,14 +66,14 @@ public class DdbBacklogItemDaoImplTest {
         public void successfulGet() {
             final String id = "game-id";
             final DdbBacklogItem expectedDdbItem = new DdbBacklogItem(BACKLOG_ITEM);
-            when(mockDdbMapper.load(DdbBacklogItem.class, id)).thenReturn(expectedDdbItem);
+            when(mockDdbMapper.load(DdbBacklogItem.class, id, "TODO")).thenReturn(expectedDdbItem);
 
             final BacklogItem actualItem = ddbDao.getItem(id);
             assertEquals(expectedDdbItem.getTitle(), actualItem.getTitle());
             assertEquals(expectedDdbItem.getSource(), actualItem.getSource().name());
             assertEquals(expectedDdbItem.getStatus(), actualItem.getStatus().name());
 
-            verify(mockDdbMapper).load(DdbBacklogItem.class, id);
+            verify(mockDdbMapper).load(DdbBacklogItem.class, id, "TODO");
             verifyNoMoreInteractions(mockDdbMapper);
         }
     }

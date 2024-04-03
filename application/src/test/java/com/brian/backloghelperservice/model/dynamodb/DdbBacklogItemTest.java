@@ -1,14 +1,13 @@
 package com.brian.backloghelperservice.model.dynamodb;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.brian.backloghelperservice.model.BacklogItem;
 import com.brian.backloghelperservice.model.BacklogItemSource;
 import com.brian.backloghelperservice.model.BacklogItemStatus;
-import org.junit.jupiter.api.Test;
-
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 public class DdbBacklogItemTest {
     private static final BacklogItem BACKLOG_ITEM =

@@ -1,7 +1,6 @@
 package com.brian.backloghelperservice.dao;
 
 import com.brian.backloghelperservice.model.BacklogItem;
-
 import java.util.List;
 
 /** Interface for interacting with the persistence layer for backlog items. */
