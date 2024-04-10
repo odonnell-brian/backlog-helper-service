@@ -1,7 +1,8 @@
-import { LambdaRestApi } from 'aws-cdk-lib/aws-apigateway';
+import { Cors, LambdaIntegration, RestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { Duration, Stack, StackProps } from "aws-cdk-lib";
 import { Construct } from 'constructs';
+import { ApiLambdaHandler } from './api-lambda-handler';
 
 export class InfraStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -14,14 +15,35 @@ export class InfraStack extends Stack {
       timeout: Duration.seconds(30),
     });
 
-    const api = new LambdaRestApi(this, 'TestApi', {
-      restApiName: 'TestApi',
-      handler: testLambdaFunction,
-      proxy: false,
+    const api = new RestApi(this, 'BacklogHelperApi', {
+      restApiName: 'BacklogHelperApi',
+      defaultCorsPreflightOptions: {
+        allowOrigins: Cors.ALL_ORIGINS,
+      },
+      defaultIntegration: new LambdaIntegration(testLambdaFunction),
+    });
+    api.root.addMethod('GET');
+
+    const itemsResource = api.root.addResource('items');
+    new ApiLambdaHandler(this, 'GetItemsHandler', {
+      apiResource: itemsResource,
+      functionName: 'GetItems',
+      handler: 'com.brian.backloghelperservice.lambda.handlers.item.GetItemsHandler::handleRequest',
+      httpMethod: 'GET',
+    });
+    new ApiLambdaHandler(this, 'PutItemHandler', {
+      apiResource: itemsResource,
+      functionName: 'PutItem',
+      handler: 'com.brian.backloghelperservice.lambda.handlers.item.PutItemHandler::handleRequest',
+      httpMethod: 'PUT',
     });
 
-    const test = api.root.addResource('test');
-    test.addMethod('POST');
-    test.addMethod('GET');
+    const itemResource = itemsResource.addResource('{itemId}')
+    new ApiLambdaHandler(this, 'GetItemByIdHandler', {
+      apiResource: itemResource,
+      functionName: 'GetItemById',
+      handler: 'com.brian.backloghelperservice.lambda.handlers.item.GetItemByIdHandler::handleRequest',
+      httpMethod: 'GET',
+    });
   }
 }

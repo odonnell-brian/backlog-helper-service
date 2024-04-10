@@ -17,7 +17,7 @@ import lombok.Setter;
 public class DdbBacklogItem {
 
   public static final String BACKLOG_TABLE_NAME = "backlog-items";
-  public static final String USER_INDEX = "userItems";
+  public static final String USER_INDEX = "user-items";
 
   @DynamoDBHashKey private String id;
 
@@ -36,12 +36,12 @@ public class DdbBacklogItem {
    *
    * @param backlogItem The item to convert to a DDB record.
    */
-  public DdbBacklogItem(final BacklogItem backlogItem) {
+  public DdbBacklogItem(final BacklogItem backlogItem, final String userId) {
     this.title = backlogItem.getTitle();
     this.status = backlogItem.getStatus().name();
     this.source = backlogItem.getSource().name();
     this.id = UUID.randomUUID().toString();
-    this.userId = "TODO";
+    this.userId = userId;
   }
 
   /**

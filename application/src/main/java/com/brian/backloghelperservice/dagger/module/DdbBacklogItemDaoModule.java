@@ -14,24 +14,23 @@ import javax.inject.Singleton;
 @Module
 public class DdbBacklogItemDaoModule {
 
-    @Provides
-    @Singleton
-    public DynamoDBMapper providerDynamoDbMapper(final Regions region) {
-        final String localEndpoint = "http://host.docker.internal:8111";
-        final AwsClientBuilder.EndpointConfiguration localEndpointConfig =
-                new AwsClientBuilder.EndpointConfiguration(localEndpoint, region.getName());
-        final AmazonDynamoDB ddbClient =
-                AmazonDynamoDBClientBuilder.standard()
-                        .withEndpointConfiguration(localEndpointConfig)
-                        .withCredentials(new DefaultAWSCredentialsProviderChain())
-                        .build();
+  @Provides
+  @Singleton
+  public DynamoDBMapper providerDynamoDbMapper(final Regions region) {
+    final String localEndpoint = "http://host.docker.internal:8111";
+    final AwsClientBuilder.EndpointConfiguration localEndpointConfig =
+        new AwsClientBuilder.EndpointConfiguration(localEndpoint, region.getName());
+    final AmazonDynamoDB ddbClient =
+        AmazonDynamoDBClientBuilder.standard()
+            .withEndpointConfiguration(localEndpointConfig)
+            .withCredentials(new DefaultAWSCredentialsProviderChain())
+            .build();
 
-        return new DynamoDBMapper(ddbClient, DynamoDBMapperConfig.DEFAULT);
-    }
+    return new DynamoDBMapper(ddbClient, DynamoDBMapperConfig.DEFAULT);
+  }
 
-    @Provides
-    public Regions provideAwsRegion() {
-        return Regions.US_WEST_2;
-    }
-
+  @Provides
+  public Regions provideAwsRegion() {
+    return Regions.US_WEST_2;
+  }
 }

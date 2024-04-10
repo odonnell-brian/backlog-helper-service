@@ -9,6 +9,5 @@ import javax.inject.Singleton;
 @Component(modules = DdbBacklogItemDaoModule.class)
 public interface RequestHandlerComponent {
 
-    DdbBacklogItemDaoImpl buildBacklogItemDao();
-
+  DdbBacklogItemDaoImpl buildBacklogItemDao();
 }
